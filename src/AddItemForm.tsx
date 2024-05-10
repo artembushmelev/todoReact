@@ -1,4 +1,9 @@
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
 import React, { ChangeEvent, useState, KeyboardEvent } from "react";
+import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
+import Box from "@mui/material/Box";
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void;
@@ -28,16 +33,30 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
     }
   };
 
+  const buttonStyles = {
+    maxWidth: "30px",
+    maxHeight: "30px",
+    minWidth: "30px",
+    minHeight: "30px",
+    background: "red",
+  };
+
   return (
-    <div>
-      <input
+    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <TextField
+        id="filled-basic"
+        label="Enter a title"
+        variant="filled"
+        size={"small"}
         value={title}
         onChange={changeItemTitleHandler}
         onKeyUp={addItemOnKeyUpHandler}
-        className={error ? "error" : ""}
+        error={!!error}
+        helperText={error}
       />
-      <button onClick={addItemHandler}>+</button>
-      {error && <div className="error-message">{error}</div>}
-    </div>
+      <IconButton color="primary" onClick={addItemHandler}>
+        +
+      </IconButton>
+    </Box>
   );
 };
