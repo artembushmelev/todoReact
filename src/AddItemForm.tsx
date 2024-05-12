@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import React, { ChangeEvent, useState, KeyboardEvent } from "react";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import Box from "@mui/material/Box";
+import { filterButtonsContainerSx } from "./Todolist.styles";
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void;
@@ -42,7 +43,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+    <Box sx={filterButtonsContainerSx}>
       <TextField
         id="filled-basic"
         label="Enter a title"
