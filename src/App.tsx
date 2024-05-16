@@ -30,15 +30,6 @@ export type FilterValuesType = "all" | "active" | "completed";
 type ThemeMode = "dark" | "light";
 
 function App() {
-  // let [tasks, setTasks] = useState([
-  //     {id: v1(), title: "HTML&CSS", isDone: true},
-  //     {id: v1(), title: "JS", isDone: true},
-  //     {id: v1(), title: "ReactJS", isDone: false},
-  //     {id: v1(), title: "Rest API", isDone: false},
-  //     {id: v1(), title: "GraphQL", isDone: false},
-  // ]);
-  // let [filter, setFilter] = useState<FilterValuesType>("all");
-
   let todolistID1 = v1();
   let todolistID2 = v1();
 
@@ -71,19 +62,19 @@ function App() {
     setTasks({ ...tasks });
   };
 
-  function removeTask(todolistId: string, id: string) {
+  const removeTask = (todolistId: string, id: string) => {
     let filteredTasks = tasks[todolistId].filter((t) => t.id !== id);
     setTasks({ ...tasks, [todolistId]: filteredTasks });
-  }
+  };
 
-  function addTask(todolistId: string, title: string) {
+  const addTask = (todolistId: string, title: string) => {
     let newTask = { id: v1(), title: title, isDone: false };
     let newTasks = {
       ...tasks,
       [todolistId]: [newTask, ...tasks[todolistId]],
     };
     setTasks(newTasks);
-  }
+  };
 
   const changeTaskStatus = (
     todolistId: string,
@@ -100,13 +91,16 @@ function App() {
     setTasks(ChangeTasks);
   };
 
-  function changeFilter(todolistId: string, value: FilterValuesType) {
+  const changeTodolistFilter = (
+    todolistId: string,
+    value: FilterValuesType
+  ) => {
     setTodolists(
       todolists.map((filtered) =>
         filtered.id === todolistId ? { ...filtered, filter: value } : filtered
       )
     );
-  }
+  };
 
   const addTodolist = (title: string) => {
     const newTodolistId = v1();
@@ -185,7 +179,7 @@ function App() {
                       title={mapTodoList.title}
                       tasks={tasksForTodolist}
                       removeTask={removeTask}
-                      changeFilter={changeFilter}
+                      changeFilter={changeTodolistFilter}
                       addTask={addTask}
                       changeTaskStatus={changeTaskStatus}
                       filter={mapTodoList.filter}
