@@ -54,9 +54,66 @@ export const todolistReducer = (
       return state.filter((el) => el.id !== action.payload.id); // логика по удалению тудулиста
     }
     case "ADD-TODOLIST": {
-      return state; // логика по добавлению тудулиста
+      const todolistId = v1();
+      return [
+        ...state,
+        { id: todolistId, title: action.payload.title, filter: "all" },
+      ]; // логика по добавлению тудулиста
+    }
+    case "CHANGE-TODOLIST-TITLE": {
+      return state.map((el) =>
+        el.id === action.payload.id
+          ? { ...el, title: action.payload.title }
+          : el
+      );
+    }
+    case "CHANGE-TODOLIST-FILTER": {
+      return state.map((el) =>
+        el.id === action.payload.id
+          ? { ...el, filter: action.payload.filter }
+          : el
+      );
     }
     default:
       return state;
   }
+};
+
+export const removeTdoolistAC = (id: string) => {
+  return {
+    type: "REMOVE-TODOLIST",
+    payload: {
+      id,
+    },
+  } as const;
+};
+export const AddTodolistAC = (title: string) => {
+  return {
+    type: "ADD-TODOLIST",
+    payload: {
+      title,
+    },
+  } as const;
+};
+
+export const ChangeTodolistTitleAC = (id: string, title: string) => {
+  return {
+    type: "CHANGE-TODOLIST-TITLE",
+    payload: {
+      id,
+      title,
+    },
+  } as const;
+};
+export const ChangeTodolistFilterAC = (
+  id: string,
+  filter: FilterValuesType
+) => {
+  return {
+    type: "CHANGE-TODOLIST-FILTER",
+    payload: {
+      id,
+      filter,
+    },
+  } as const;
 };
