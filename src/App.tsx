@@ -19,11 +19,16 @@ import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline, Switch } from "@mui/material";
 import { AppBarHeader } from "./AppBar";
+import { TaskType } from "./TodoListWithRef";
 
 export type TodolistsType = {
   id: string;
   title: string;
   filter: FilterValuesType;
+};
+
+export type TasksStateType = {
+  [key: string]: TaskType[];
 };
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -38,7 +43,7 @@ function App() {
     { id: todolistID2, title: "What to buy", filter: "all" },
   ]);
 
-  let [tasks, setTasks] = useState({
+  let [tasks, setTasks] = useState<TasksStateType>({
     [todolistID1]: [
       { id: v1(), title: "HTML&CSS", isDone: true },
       { id: v1(), title: "JS", isDone: true },
