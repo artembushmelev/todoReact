@@ -3,7 +3,7 @@ import {
   AddTodolistAC,
   ChangeTodolistFilterAC,
   ChangeTodolistTitleAC,
-  removeTdoolistAC,
+  removeTodolistAC as removeTodolistAC,
   todolistReducer,
 } from "./todolists-reducer";
 import { v1 } from "uuid";
@@ -19,7 +19,7 @@ test("correct todolist should be removed", () => {
     { id: todolistId2, title: "What to buy", filter: "all" },
   ];
 
-  const endState = todolistReducer(startState, removeTdoolistAC(todolistId1));
+  const endState = todolistReducer(startState, removeTodolistAC(todolistId1));
 
   // 3. Проверяем, что наши действия (изменения state) соответствуют ожиданию
   // в массиве останется один тудулист
