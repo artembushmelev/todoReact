@@ -35,6 +35,10 @@ import {
   removeTaskAC,
   tasksReducer,
 } from "./model/tasks-reducer";
+import { useSelector } from "react-redux";
+import { AppRootStateType } from "./model/store";
+import { useDispatch } from "react-redux";
+import { TodolistWithRedax } from "./TodoListWithRedax";
 
 export type TodolistsType = {
   id: string;
@@ -50,44 +54,30 @@ export type FilterValuesType = "all" | "active" | "completed";
 
 type ThemeMode = "dark" | "light";
 
-function AppWithReducer() {
+function AppWithRedux() {
   let todolistID1 = v1();
   let todolistID2 = v1();
 
-  let [todolists, dispathToTodolists] = useReducer(todolistReducer, [
-    { id: todolistID1, title: "What to learn", filter: "all" },
-    { id: todolistID2, title: "What to buy", filter: "all" },
-  ]);
+  let todolists = useSelector<AppRootStateType, Array<TodolistsType>>(
+    (state) => state.todolists
+  );
 
-  let [tasks, dispathToTasks] = useReducer(tasksReducer, {
-    [todolistID1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "ReactJS", isDone: false },
-      { id: v1(), title: "Rest API", isDone: false },
-      { id: v1(), title: "GraphQL", isDone: false },
-    ],
-    [todolistID2]: [
-      { id: v1(), title: "HTML&CSS2", isDone: true },
-      { id: v1(), title: "JS2", isDone: true },
-      { id: v1(), title: "ReactJS2", isDone: false },
-      { id: v1(), title: "Rest API2", isDone: false },
-      { id: v1(), title: "GraphQL2", isDone: false },
-    ],
-  });
+  let tasks = useSelector<AppRootStateType, TasksStateType>(
+    (state) => state.tasks
+  );
+
+  const dispath = useDispatch();
 
   let removeTodoList = (todolistId: string) => {
-    let action = removeTodolistAC(todolistId);
-    dispathToTodolists(action);
-    dispathToTasks(action);
+    dispath(removeTodolistAC(todolistId));
   };
 
   const removeTask = (todolistId: string, id: string) => {
-    dispathToTasks(removeTaskAC(id, todolistId));
+    dispath(removeTaskAC(id, todolistId));
   };
 
   const addTask = (todolistId: string, title: string) => {
-    dispathToTasks(addTaskAC(title, todolistId));
+    dispath(addTaskAC(title, todolistId));
   };
 
   const changeTaskStatus = (
@@ -95,20 +85,18 @@ function AppWithReducer() {
     taskId: string,
     isDone: boolean
   ) => {
-    dispathToTasks(changeTaskStatusAC(taskId, isDone, todolistId));
+    dispath(changeTaskStatusAC(taskId, isDone, todolistId));
   };
 
   const changeTodolistFilter = (
     todolistId: string,
     value: FilterValuesType
   ) => {
-    dispathToTodolists(ChangeTodolistFilterAC(todolistId, value));
+    dispath(ChangeTodolistFilterAC(todolistId, value));
   };
 
   const addTodolist = (title: string) => {
-    let action = AddTodolistAC(title);
-    dispathToTasks(action);
-    dispathToTodolists(action);
+    dispath(AddTodolistAC(title));
   };
 
   const updateTaskTitle = (
@@ -116,11 +104,11 @@ function AppWithReducer() {
     taskId: string,
     title: string
   ) => {
-    dispathToTasks(changeTaskTitleAC(taskId, title, todolistId));
+    dispath(changeTaskTitleAC(taskId, title, todolistId));
   };
 
   const updateTodolist = (todolistId: string, title: string) => {
-    dispathToTodolists(ChangeTodolistTitleAC(todolistId, title));
+    dispath(ChangeTodolistTitleAC(todolistId, title));
   };
 
   const [themeMode, setThemeMode] = useState<ThemeMode>("light");
@@ -153,36 +141,23 @@ function AppWithReducer() {
           </Grid>
           <Grid container spacing={5}>
             {todolists.map((mapTodoList) => {
-              let tasksForTodolist = tasks[mapTodoList.id];
+              // let tasksForTodolist = tasks[mapTodoList.id];
 
-              if (mapTodoList.filter === "active") {
-                tasksForTodolist = tasks[mapTodoList.id].filter(
-                  (t) => t.isDone === false
-                );
-              }
-              if (mapTodoList.filter === "completed") {
-                tasksForTodolist = tasks[mapTodoList.id].filter(
-                  (t) => t.isDone === true
-                );
-              }
+              // if (mapTodoList.filter === "active") {
+              //   tasksForTodolist = tasks[mapTodoList.id].filter(
+              //     (t) => t.isDone === false
+              //   );
+              // }
+              // if (mapTodoList.filter === "completed") {
+              //   tasksForTodolist = tasks[mapTodoList.id].filter(
+              //     (t) => t.isDone === true
+              //   );
+              // }
 
               return (
-                <Grid item>
+                <Grid key={mapTodoList.id} item>
                   <Paper elevation={6} sx={{ padding: "20px" }}>
-                    <Todolist
-                      key={mapTodoList.id}
-                      todolistId={mapTodoList.id}
-                      title={mapTodoList.title}
-                      tasks={tasksForTodolist}
-                      removeTask={removeTask}
-                      changeFilter={changeTodolistFilter}
-                      addTask={addTask}
-                      changeTaskStatus={changeTaskStatus}
-                      filter={mapTodoList.filter}
-                      removeTodoList={removeTodoList}
-                      updateTask={updateTaskTitle}
-                      updateTodolist={updateTodolist}
-                    />
+                    <TodolistWithRedax todolist={mapTodoList} />
                   </Paper>
                 </Grid>
               );
@@ -194,4 +169,4 @@ function AppWithReducer() {
   );
 }
 
-export default AppWithReducer;
+export default AppWithRedux;
