@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import { FilterValuesType } from "./App";
-import { AddItemForm } from "./AddItemForm";
-import { EditableSpan } from "./EditableSpan";
+import { AddItemForm } from "./addItemForm/AddItemForm";
+import { EditableSpan } from "./EditableSpan/EditableSpan";
 
-import { Task } from "./Task";
+import { Task } from "./Task/Task";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 
