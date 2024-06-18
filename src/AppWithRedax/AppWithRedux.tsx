@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import "./App.css";
 import { TaskType, Todolist } from "../Todolist";
 import { AddItemForm } from "../addItemForm/AddItemForm";
 import {

@@ -8,6 +8,9 @@ import { IconButton, TextField } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
 import { EditableSpan } from "../EditableSpan/EditableSpan";
 import AppWithRedux from "./AppWithRedux";
+import { Provider } from "react-redux";
+import { store } from "../state/store";
+import { ReduxStoreProviderDecorator } from "../state/ReduxStoreProviderDecorator";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof AppWithRedux> = {
@@ -23,6 +26,7 @@ const meta: Meta<typeof AppWithRedux> = {
   argTypes: {},
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: {},
+  decorators: [ReduxStoreProviderDecorator],
 };
 
 export default meta;
